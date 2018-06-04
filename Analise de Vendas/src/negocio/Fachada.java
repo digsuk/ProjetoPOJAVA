@@ -26,17 +26,15 @@ public class Fachada {
 	private CadastroFuncionario funcionario;
 	private CadastroVendProd vendProd;
 	public Fachada(){
-		
-		//Repositório de Banco de Dados
-		/*IRepositorioProduto repProd = new RepProdBD();
-		IRepositorioFuncionario repFunc = new RepFuncBD();
-		IRepositorioVendProd repVendProd = new RepVendProdBD();
-		*/
 		//Repositório Array
-		IRepositorioProduto repProd = new RepProdArray();
+		/*IRepositorioProduto repProd = new RepProdArray();
 		IRepositorioFuncionario repFunc = new RepFuncArray();
 		IRepositorioVendProd repVendProd = new RepVendProdArray();
-				
+				*/
+		IRepositorioProduto repProd = new RepProdBD();
+		IRepositorioFuncionario repFunc = new RepFuncBD();
+		IRepositorioVendProd repVendProd = new RepVendProdBD();
+		
 		vendProd = new CadastroVendProd(repVendProd);
 		produto = new CadastroProduto(repProd);
 		funcionario = new CadastroFuncionario(repFunc);
