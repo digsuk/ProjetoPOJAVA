@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="Biblioteca/commons-beanutils-1.7.0.jar"/>
+	<classpathentry kind="lib" path="Biblioteca/commons-collections-3.1.jar"/>
+	<classpathentry kind="lib" path="Biblioteca/commons-digester-1.7.jar"/>
+	<classpathentry kind="lib" path="Biblioteca/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="Biblioteca/groovy-all-1.5.3.jar"/>
+	<classpathentry kind="lib" path="Biblioteca/itext-2.1.7.jar"/>
+	<classpathentry kind="lib" path="Biblioteca/jasperreports-5.5.1.jar"/>
+	<classpathentry kind="lib" path="Biblioteca/javax.mail-1.6.1.jar"/>
+	<classpathentry kind="lib" path="Biblioteca/jdt-compiler-3.1.1.jar"/>
+	<classpathentry kind="lib" path="Biblioteca/poi-3.9.jar"/>
+	<classpathentry kind="lib" path="Biblioteca/postgresql-42.2.2.jar"/>
+	<classpathentry kind="lib" path="Biblioteca/servlet-api-2.4.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
