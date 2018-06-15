@@ -18,6 +18,7 @@ import entidades.Produto;
 import entidades.Vendedor;
 import excecoes.CPFNaoEncontradoException;
 import interfaces.IRepositorioFuncionario;
+import interfaces.IRepositorioPedido;
 import interfaces.IRepositorioProduto;
 import interfaces.IRepositorioVendProd;
 public class Fachada {

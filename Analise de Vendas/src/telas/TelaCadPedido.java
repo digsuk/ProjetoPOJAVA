@@ -19,6 +19,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import entidades.Pedido;
 import negocio.Fachada;
 import negocio.ValidarDados;
 
@@ -44,6 +45,7 @@ public class TelaCadPedido extends JFrame {
 	private JTextField textFieldItemValorTotal;
 	private JTextField textFieldQuantidade;
 	private JTextField textFieldCPF;
+	
 	
 	public static TelaCadPedido getInstance() {
 		if (instance == null)
@@ -150,7 +152,7 @@ public class TelaCadPedido extends JFrame {
 						Pedido pedido = new Pedido(textFieldData.getText(), textFieldItemProduto.getText(), Double.parseDouble(textFieldItemValorTotal.getText()),
 								Integer.parseInt(textFieldQuantidade.getText()), textFieldCPF.getText());
 						
-						pedidoCadastrado = Fachada.getInstance().procurarPedido(textFieldNome.getText());
+						pedidoCadastrado = Fachada.getInstance().procurarPedido(textFieldCPF.getText());
 						if(pedidoCadastrado == null) {
 							Fachada.getInstance().cadastrarPedido(pedido);
 							JOptionPane.showMessageDialog(null, "mensagemdepedidocadastradocomsucesso");
@@ -159,8 +161,8 @@ public class TelaCadPedido extends JFrame {
 							//popup para erro de cadastro de pedido	
 							}
 						
-					}catch() {
-						//colocar popup para numberformatexception
+					}catch(NumberFormatException nfe) {
+						Popup.numberFormat();
 					}
 				}
 			}
