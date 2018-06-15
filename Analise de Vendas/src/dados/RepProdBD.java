@@ -32,7 +32,7 @@ public class RepProdBD extends RepositorioBD implements IRepositorioProduto{
 		super();
 	}
 	
-	/*Método que recebe o produto, monta o camando sql
+	/*Método que recebe o produto, monta o comando sql
 	 *de inserção e grava no banco de dados*/
 	public void inserir(Produto produto) {
 		/*Construir comando sql para inserir os valores 

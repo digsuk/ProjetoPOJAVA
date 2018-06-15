@@ -18,6 +18,7 @@ import entidades.Produto;
 import entidades.Vendedor;
 import excecoes.CPFNaoEncontradoException;
 import interfaces.IRepositorioFuncionario;
+import interfaces.IRepositorioPedido;
 import interfaces.IRepositorioProduto;
 import interfaces.IRepositorioVendProd;
 public class Fachada {
@@ -25,6 +26,8 @@ public class Fachada {
 	private CadastroProduto produto;
 	private CadastroFuncionario funcionario;
 	private CadastroVendProd vendProd;
+	private CadastroPedido pedido;
+	
 	public Fachada(){
 		//Repositório Array
 		/*IRepositorioProduto repProd = new RepProdArray();
@@ -34,10 +37,12 @@ public class Fachada {
 		IRepositorioProduto repProd = new RepProdBD();
 		IRepositorioFuncionario repFunc = new RepFuncBD();
 		IRepositorioVendProd repVendProd = new RepVendProdBD();
+		IRepositorioPedido repPedido = new RepPedidoBD();
 		
 		vendProd = new CadastroVendProd(repVendProd);
 		produto = new CadastroProduto(repProd);
 		funcionario = new CadastroFuncionario(repFunc);
+		pedido = new CadastroPedido(repPedido);
 	}
 	
 	public static Fachada getInstance(){
@@ -103,4 +108,19 @@ public class Fachada {
 		this.vendProd.remover(produto_nome, vendedor_cpf);
 	}
 	//FIM CRUD de vendedor_produto
+	
+	//INICIO CRUD de Pedido
+	public void cadastrar(Pedido pedido) {
+		this.pedido.inserir(pedido);
+	}
+	public Pedido procurar(String cpf) {
+		return this.pedido.procurar(cpf);
+	}
+	public void atualizar(String cpf) {
+		this.pedido.atualizar(cpf);
+	}
+	public void remover(String cpf) {
+		this.pedido.remover(cpf);
+	}
+	//FIM CRUD de pedido
 }
