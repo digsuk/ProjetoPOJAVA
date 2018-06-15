@@ -6,7 +6,8 @@
  *------------------------------------------------
  * Histórico de modificação
  * Data             Autor                   Descrição
- *          |                       |
+ * 09/06/2018 | Diogo Souza  | Criação da tela
+ * 11/06/2018 | Diogo Souza  | Implementação da tela
  *-------------------------------------------------------*/          
 package telas;
 
@@ -17,6 +18,10 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import negocio.Fachada;
+import negocio.ValidarDados;
+
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
@@ -28,21 +33,31 @@ import javax.swing.JToolBar;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 public class TelaCadPedido extends JFrame {
 
 	private JPanel contentPane;
 	private static TelaCadPedido instance;
-	private JTextField textFieldNome;
-	private JTextField textFieldDescricao;
+	private JTextField textFieldData;
+	private JTextField textFieldItemProduto;
+	private JTextField textFieldItemValorTotal;
 	private JTextField textFieldQuantidade;
-	private JTextField textFieldValor;
 	private JTextField textFieldCPF;
 	
 	public static TelaCadPedido getInstance() {
 		if (instance == null)
 			instance = new TelaCadPedido();
 		return instance;
+	}
+	
+	public void limparCampos() {
+		textFieldData.setText("");
+		textFieldItemProduto.setText("");
+		textFieldItemValorTotal.setText("");
+		textFieldQuantidade.setText("");
+		textFieldCPF.setText("");
+		
 	}
 	/**
 	 * Launch the application.
@@ -74,25 +89,25 @@ public class TelaCadPedido extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblNome = new JLabel("Nome:");
-		lblNome.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblNome.setBounds(108, 73, 86, 21);
-		contentPane.add(lblNome);
+		JLabel lblData = new JLabel("Data:");
+		lblData.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblData.setBounds(108, 73, 86, 21);
+		contentPane.add(lblData);
 		
-		textFieldNome = new JTextField();
-		textFieldNome.setBounds(204, 73, 140, 20);
-		contentPane.add(textFieldNome);
-		textFieldNome.setColumns(10);
+		textFieldData = new JTextField();
+		textFieldData.setBounds(204, 73, 140, 20);
+		contentPane.add(textFieldData);
+		textFieldData.setColumns(10);
 		
-		JLabel lblDescricao = new JLabel("Descri\u00E7\u00E3o:");
-		lblDescricao.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblDescricao.setBounds(108, 135, 86, 21);
-		contentPane.add(lblDescricao);
+		JLabel lblItemProduto = new JLabel("Nome do Produto:");
+		lblItemProduto.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblItemProduto.setBounds(108, 135, 86, 21);
+		contentPane.add(lblItemProduto);
 		
-		textFieldDescricao = new JTextField();
-		textFieldDescricao.setBounds(204, 137, 140, 20);
-		contentPane.add(textFieldDescricao);
-		textFieldDescricao.setColumns(10);
+		textFieldItemProduto = new JTextField();
+		textFieldItemProduto.setBounds(204, 137, 140, 20);
+		contentPane.add(textFieldItemProduto);
+		textFieldItemProduto.setColumns(10);
 		
 		JLabel lblQuantidade = new JLabel("Quantidade:");
 		lblQuantidade.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -104,15 +119,15 @@ public class TelaCadPedido extends JFrame {
 		contentPane.add(textFieldQuantidade);
 		textFieldQuantidade.setColumns(10);
 		
-		JLabel lblValor = new JLabel("Valor:");
-		lblValor.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblValor.setBounds(108, 275, 86, 21);
-		contentPane.add(lblValor);
+		JLabel lblItemValorTotal = new JLabel("Valor Total:");
+		lblItemValorTotal.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblItemValorTotal.setBounds(108, 275, 86, 21);
+		contentPane.add(lblItemValorTotal);
 		
-		textFieldValor = new JTextField();
-		textFieldValor.setBounds(204, 275, 140, 20);
-		contentPane.add(textFieldValor);
-		textFieldValor.setColumns(10);
+		textFieldItemValorTotal = new JTextField();
+		textFieldItemValorTotal.setBounds(204, 275, 140, 20);
+		contentPane.add(textFieldItemValorTotal);
+		textFieldItemValorTotal.setColumns(10);
 		
 		JLabel lblCPF = new JLabel("CPF:");
 		lblCPF.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -125,6 +140,31 @@ public class TelaCadPedido extends JFrame {
 		textFieldCPF.setColumns(10);
 		
 		JButton btnCadastrar = new JButton("Cadastrar");
+		btnCadastrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(ValidarDados.validarCampoVazio(textFieldData.getText(), textFieldItemProduto.getText(), textFieldQuantidade.getText(), 
+						textFieldItemValorTotal.getText(), textFieldCPF.getText())) {
+					try {
+						
+						Pedido pedidoCadastrado;
+						Pedido pedido = new Pedido(textFieldData.getText(), textFieldItemProduto.getText(), Double.parseDouble(textFieldItemValorTotal.getText()),
+								Integer.parseInt(textFieldQuantidade.getText()), textFieldCPF.getText());
+						
+						pedidoCadastrado = Fachada.getInstance().procurarPedido(textFieldNome.getText());
+						if(pedidoCadastrado == null) {
+							Fachada.getInstance().cadastrarPedido(pedido);
+							JOptionPane.showMessageDialog(null, "mensagemdepedidocadastradocomsucesso");
+							limparCampos();
+						}else {
+							//popup para erro de cadastro de pedido	
+							}
+						
+					}catch() {
+						//colocar popup para numberformatexception
+					}
+				}
+			}
+		});
 		btnCadastrar.setBounds(204, 394, 99, 23);
 		contentPane.add(btnCadastrar);
 		
