@@ -37,12 +37,12 @@ public class Fachada {
 		IRepositorioProduto repProd = new RepProdBD();
 		IRepositorioFuncionario repFunc = new RepFuncBD();
 		IRepositorioVendProd repVendProd = new RepVendProdBD();
-		IRepositorioPedido repPedido = new RepPedidoBD();
+		//IRepositorioPedido repPedido = new RepPedidoBD();
 		
 		vendProd = new CadastroVendProd(repVendProd);
 		produto = new CadastroProduto(repProd);
 		funcionario = new CadastroFuncionario(repFunc);
-		pedido = new CadastroPedido(repPedido);
+		//pedido = new CadastroPedido(repPedido);
 	}
 	
 	public static Fachada getInstance(){
@@ -110,7 +110,7 @@ public class Fachada {
 	//FIM CRUD de vendedor_produto
 	
 	//INICIO CRUD de Pedido
-	public void cadastrar(Pedido pedido) {
+/*	public void cadastrar(Pedido pedido) {
 		this.pedido.inserir(pedido);
 	}
 	public Pedido procurar(String cpf) {
@@ -121,6 +121,6 @@ public class Fachada {
 	}
 	public void remover(String cpf) {
 		this.pedido.remover(cpf);
-	}
+	}*/
 	//FIM CRUD de pedido
 }

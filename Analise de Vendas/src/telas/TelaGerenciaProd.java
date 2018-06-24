@@ -520,7 +520,7 @@ public class TelaGerenciaProd extends JFrame {
 		JButton button = new JButton(" Informa\u00E7\u00F5es de ajuda");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				Popup.infoGerProd();
 			}
 		});
 		button.setIcon(new ImageIcon(TelaGerenciaProd.class.getResource("/imagem/question.png")));

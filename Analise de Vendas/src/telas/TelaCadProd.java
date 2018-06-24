@@ -215,6 +215,7 @@ public class TelaCadProd extends JFrame {
 		JButton button_1 = new JButton(" Informa\u00E7\u00F5es de ajuda");
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				Popup.infoCadProd();
 			}
 		});
 		button_1.setIcon(new ImageIcon(TelaCadProd.class.getResource("/imagem/question.png")));
