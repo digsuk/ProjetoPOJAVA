@@ -23,8 +23,8 @@ import entidades.Produto;
 import interfaces.IRepositorioPedido;
 import telas.TelaEditProd;
 
-public class RepPedidoBD implements IRepositorioPedido{
-	
+public class RepPedidoBD {
+	/*
 	private static final String INSERIR   = "INSERT INTO produto ";
 	private static final String PROCURAR  = "SELECT * FROM produto ";
 	private static final String REMOVER   = "DELETE FROM produto WHERE nome = ";
@@ -126,6 +126,5 @@ public class RepPedidoBD implements IRepositorioPedido{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
+	}*/
 }

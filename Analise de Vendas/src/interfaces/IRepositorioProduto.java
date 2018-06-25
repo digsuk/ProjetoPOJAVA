@@ -12,6 +12,7 @@
 package interfaces;
 
 import java.sql.ResultSet;
+import java.util.List;
 
 import entidades.Produto;
 
@@ -20,5 +21,5 @@ public interface IRepositorioProduto {
 	public Produto procurar(String identificador);
 	public void remover(String identificador);
 	public void atualizar(Produto produto);
-	public ResultSet listar();
+	public List listar();
 }

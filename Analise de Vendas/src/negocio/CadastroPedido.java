@@ -15,6 +15,7 @@ package negocio;
 import java.sql.ResultSet;
 
 import entidades.Pedido;
+import excecoes.CPFNaoEncontradoException;
 import interfaces.IRepositorioPedido;
 
 
@@ -28,13 +29,7 @@ public class CadastroPedido {
 	public void inserir(Pedido pedido){
 		repositorio.inserir(pedido);
 	}
-	public Pedido procurar(String identificador) {
+	public Pedido procurar(String identificador) throws CPFNaoEncontradoException {
 			return repositorio.procurar(identificador);
-	}
-	public void remover(String identificador){
-		repositorio.remover(identificador);
-	}
-	public void atualizar(Pedido pedido){
-		repositorio.atualizar(pedido);
 	}
 }

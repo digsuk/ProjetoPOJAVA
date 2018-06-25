@@ -44,6 +44,28 @@ public class Mensagem {
 	public static final String EXCLUIDO = "Excluído! ";
 	public static final String EDICAO = "Edição concluída! ";
 	public static final String DISTRIBUIDO = "Produto distribuído! ";
-	 
+	//Informações de ajuda
+		public static final String AJUDACADPROD = "Para cadastrar um produto é necessário "+"\n"
+												+ "informar o nome do produto, uma descrição "+"\n"
+												+ "que detalhe informações adicionais a seu "+"\n"
+												+ "respeito, a sua quantidade inserida e o seu "+"\n"
+												+ "valor unitário.";
+		
+		public static final String AJUDAGERPROD = "Para gerenciar os prodrutos cadastrados é necessário "+"\n"
+				  								+ "realizar a busca por um produto informando o seu nome "+"\n"
+				  								+ "ou realizar uma busca sem informar o nome do produto "+"\n"
+				  								+ "para ver todos os produtos cadastrados. Após realizar "+"\n"
+				  								+ "a busca, será possível selecionar o produto desejado "+"\n"
+				  								+ "na tabela de produtos e editar suas informações ou "+"\n"
+				  								+ "remover o produto. Também é possível selecionar um "+"\n"
+				  								+ "produto e distribuí-lo a um vendedor cadastrado para "+"\n"
+				  								+ "o gerente logado, para isso, basta selecionar um "+"\n"
+				  								+ "vendedor no comboBox e selecionar o produto, em "+"\n"
+				  								+ "seguida, informar a quantidade a ser distribuída e "+"\n"
+				  								+ "pressionar o botão distribuir. Caso deseje retirar "+"\n"
+				  								+ "produtos que foram distribuidos a um vendedor, "+"\n"
+				  								+ "selecione o produto na tabela do vendedor e informe "+"\n"
+				  								+ "a quantidade a ser removida, em seguida, pressione o "+"\n"
+				  								+ "botão remover.";
 	
 }

@@ -11,13 +11,14 @@
 package entidades;
 
 public class Cliente {
-	private String cpf, cnpj;
+	private String cpf, cnpj, nome;
 	
-	public Cliente(String cpf, String cnpj) {
-		super();
+	public Cliente(String cpf, String cnpj, String nome) {
 		this.cpf = cpf;
 		this.cnpj = cnpj;
+		this.nome = nome;
 	}
+	
 	public String getCpf() {
 		return cpf;
 	}
@@ -29,5 +30,11 @@ public class Cliente {
 	}
 	public void setCnpj(String cnpj) {
 		this.cnpj = cnpj;
+	}
+	public String getNome() {
+		return this.nome;
+	}
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 }

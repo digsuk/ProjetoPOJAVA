@@ -12,15 +12,16 @@
 package interfaces;
 
 import java.sql.ResultSet;
+import java.util.List;
 
 import entidades.Funcionario;
 import excecoes.CPFNaoEncontradoException;
 
 public interface IRepositorioFuncionario {
-	public void inserir(Funcionario produto);
-	public Funcionario procurar(String identificador) throws CPFNaoEncontradoException;
-	public void remover(String identificador);
-	public void atualizar(Funcionario produto);
+	public void inserir(Funcionario funcionario);
+	public Funcionario procurar(String cpf) throws CPFNaoEncontradoException;
+	public void remover(String cpf);
+	public void atualizar(Funcionario funcionario);
 	public ResultSet listar();
-	public ResultSet listar(String identificador);
+	public List listar(String cpf);
 }

@@ -11,8 +11,11 @@
 package dados;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import entidades.Funcionario;
+import entidades.Vendedor;
 import excecoes.CPFNaoEncontradoException;
 import interfaces.IRepositorioFuncionario;
 
@@ -77,9 +80,10 @@ public class RepFuncArray implements IRepositorioFuncionario{
 	
 	public void atualizar(Funcionario funcionario) {
 		if (!existe(funcionario.getNome())) {
+			repositorio[i] = funcionario;
+		}else{
 			System.err.println("Erro!");
 		}
-		repositorio[i] = funcionario;
 	}
 	
 	public ResultSet listar(){
@@ -87,9 +91,17 @@ public class RepFuncArray implements IRepositorioFuncionario{
 		return rs;
 	}
 	
-	public ResultSet listar(String identificador){
-		ResultSet rs = null;
-		return rs;
+	public List listar(String cpf){
+		List vendedores = new ArrayList();
+		i = 0;
+		while(i < indice){
+			if(repositorio[i] instanceof Vendedor){
+				if(((Vendedor)repositorio[i]).getSubalterno().equals(cpf)){
+					vendedores.add(repositorio[i]);
+				}
+			}
+			i++;
+		}
+		return vendedores;
 	}
-	
 }
