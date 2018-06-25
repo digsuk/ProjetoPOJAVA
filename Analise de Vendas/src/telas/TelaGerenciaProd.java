@@ -54,6 +54,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.UIManager;
 
 public class TelaGerenciaProd extends JFrame {
 
@@ -171,12 +174,12 @@ public class TelaGerenciaProd extends JFrame {
 				
 				//Caso o campo de busca esteja vazio, será listado todos os produtos cadastrados.
 				if (textFieldNome.getText().equals("")) {
-					ResultSet rs;
-					rs = Fachada.getInstance().listarProd();
-					
+					List lista;
+					lista = Fachada.getInstance().listarProd();
+	
 					//Insere resultados da busca na tabela.
-					ClasseAssistente.montarTabelaProduto(rs, modelo);
-					
+					ClasseAssistente.montarTabelaProduto(lista, modelo);
+						
 					//Monta o comboBox com os vendedores supordinados ao gerente logado e devolve o cpf do gerente
 					cpf = ClasseAssistente.montaComboBox(comboBox);
 				} else{
@@ -269,22 +272,25 @@ public class TelaGerenciaProd extends JFrame {
 					String vendedorCPF = cpf.get(vendedorSelecionado);
 					try{
 					//Recupera dados do vendedor.
-					Funcionario vendedor = Fachada.getInstance().procurarFunc(vendedorCPF);
-					}catch(CPFNaoEncontradoException cpfnee){
-						
-					}
+					Vendedor vendedor = (Vendedor) Fachada.getInstance().procurarFunc(vendedorCPF);
+					
 					//Caso a tabela esteja preenchida, ela será limpada, para receber novos resultados.
 					while(modeloVendProd.getRowCount()>0)
 						modeloVendProd.removeProdutoAt(0);
 					
 					//Listar todos os produtos do vendedor.
-						ResultSet rs;
+						List produtos;
 						
-						rs = Fachada.getInstance().listarVendProd(vendedorCPF);
-						if(rs!=null){
+						produtos = Fachada.getInstance().listarVendProd(vendedorCPF);
+						if(produtos!=null){
 							//Insere resultados da busca na tabela.
-							ClasseAssistente.montarTabelaProduto(rs, modeloVendProd);
+							ClasseAssistente.montarTabelaProduto(produtos, modeloVendProd);
 						}
+					}catch(CPFNaoEncontradoException cpfnee){
+						//Caso a tabela esteja preenchida, ela será limpada, para receber novos resultados.
+						while(modeloVendProd.getRowCount()>0)
+							modeloVendProd.removeProdutoAt(0);
+					}
 				}
 			}
 		});
@@ -315,13 +321,13 @@ public class TelaGerenciaProd extends JFrame {
 							int vendedorSelecionado = comboBox.getSelectedIndex();
 							if(vendedorSelecionado!=-1){
 								Produto produto; 
-								Produto produtoToVendedor = new Produto();
+								Produto produtoToVendedor;
 								
 								//Recupera o produto selecionado na tabela
 								produto = modelo.getProdutoAt(linhas[0]);
 								//Recupera os dados do vendedor selecionado no dropDown
 								String vendedorCPF = cpf.get(vendedorSelecionado);
-								Funcionario vendedor = Fachada.getInstance().procurarFunc(vendedorCPF);
+								Vendedor vendedor = (Vendedor) Fachada.getInstance().procurarFunc(vendedorCPF);
 								
 								//Retirar do repositorio a quantidade de produto selecionado
 								produto.retirarProduto(quantidade);
@@ -342,7 +348,8 @@ public class TelaGerenciaProd extends JFrame {
 									//Atualizar o produto no repositorio
 									produtoToVendedor.inserirProduto(quantidade);
 									Fachada.getInstance().atualizar(produtoToVendedor, vendedorCPF);
-								}else{
+								}
+									produtoToVendedor = new Produto();
 									//Inserir o produto para o vendedor
 									produtoToVendedor.setNome(produto.getNome());
 									produtoToVendedor.setDescricao(produto.getDescricao());
@@ -350,8 +357,7 @@ public class TelaGerenciaProd extends JFrame {
 									produtoToVendedor.setValor(produto.getValor());
 									
 									Fachada.getInstance().cadastrar(vendedor,produtoToVendedor);
-								}
-								
+												
 								//Atualizar tabelas 
 								modeloVendProd.addProduto(produtoToVendedor);
 								modelo.removeProdutoAt(linhas[0]);
@@ -509,7 +515,26 @@ public class TelaGerenciaProd extends JFrame {
 		menuBar.add(menu_2);
 		
 		JMenuItem menuItem_5 = new JMenuItem("Relat\u00F3rio");
+		menuItem_5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				TelaRelatorioVendas.getInstance().setVisible(true);
+				dispose();
+			}
+		});
 		menu_2.add(menuItem_5);
+		
+		JButton btnSair = new JButton("Sair");
+		btnSair.setBorder(UIManager.getBorder("MenuItem.border"));
+		btnSair.setBorderPainted(false);
+		btnSair.setBackground(SystemColor.control);
+		btnSair.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ValidarDados.funcionario = null;
+				TelaLogin.getInstance().setVisible(true);
+				dispose();
+			}
+		});
+		menuBar.add(btnSair);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setLayout(null);

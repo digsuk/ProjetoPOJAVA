@@ -1,10 +1,23 @@
+/* Autor: Jonathan Moura
+ * Data:06/05/2018
+ *---------------------------------------------
+ * Descrição: Classe de repositório para 
+ * 			  produtos do vendedor..
+ *---------------------------------------------
+ * Histórico de modificação
+ * Data    		Autor 		   Descrição
+ * 14/05/18 |Jonathan Moura | CRUD funcionário
+ *-------------------------------------------*/
 package dados;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import entidades.Produto;
+import entidades.Vendedor;
 import entidades.Funcionario;
 import interfaces.IRepositorioVendProd;
 import telas.TelaEditProd;
@@ -16,7 +29,7 @@ public class RepVendProdBD extends RepositorioBD implements IRepositorioVendProd
 	private static final String REMOVER   = "DELETE FROM vendedor_produto WHERE produto_nome = AND vendedor_cpf = ?";
 	private static final String CAMPOS    = "(id, produto_nome, descricao, quantidade, valor, vendedor_cpf) ";	
 	
-	public void inserir(Funcionario vendedor, Produto produto){
+	public void inserir(Vendedor vendedor, Produto produto){
 		/*Construir comando sql para inserir os valores 
 		 *dos atributos do produto e do vendedor 
 		 *no repositorio de banco de dados */
@@ -64,17 +77,24 @@ public class RepVendProdBD extends RepositorioBD implements IRepositorioVendProd
 		}
 	}
 	
-	public ResultSet listar(String cpf){
+	public List listar(String cpf){
+		List produtos = new ArrayList();
 		String where = "WHERE vendedor_cpf = " + "\'"+cpf+"\'";
 		String comando = PROCURAR + where;
 		try {
 			Statement stm = con.createStatement(1, 0);
 			ResultSet rs = stm.executeQuery(comando);
 			if (rs != null) {
-				System.out.println("Sucesso!");
-				return rs;
+				while(rs.next()){
+					Produto p = new Produto();
+					p.setNome(rs.getString("produto_nome"));
+					p.setDescricao(rs.getString("descricao"));
+					p.setQuantidade(rs.getInt("quantidade"));
+					p.setValor(rs.getDouble("valor"));
+					produtos.add(p);
+				}
+				return produtos;
 			} else {
-				System.err.println("Erro!");
 				return null;
 			}
 		} catch (Exception e) {

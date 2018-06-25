@@ -13,6 +13,7 @@
 package negocio;
 
 import java.sql.ResultSet;
+import java.util.List;
 
 import entidades.Funcionario;
 import excecoes.CPFNaoEncontradoException;
@@ -28,8 +29,8 @@ public class CadastroFuncionario {
 	public void inserir(Funcionario funcionario){
 		repositorio.inserir(funcionario);
 	}
-	public Funcionario procurar(String identificador) throws CPFNaoEncontradoException{
-		return repositorio.procurar(identificador);
+	public Funcionario procurar(String cpf) throws CPFNaoEncontradoException{
+		return repositorio.procurar(cpf);
 	}
 	public void remover(String identificador){
 		repositorio.remover(identificador);
@@ -40,7 +41,7 @@ public class CadastroFuncionario {
 	public ResultSet listar(){
 		return repositorio.listar();
 	}
-	public ResultSet listar(String identificador){
+	public List listar(String identificador){
 		return repositorio.listar(identificador);
 	}
 	

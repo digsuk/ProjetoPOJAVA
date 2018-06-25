@@ -16,14 +16,24 @@ public class Pedido {
 	private Date data; 
 	private ItemPedido itemPedido;
 	private Cliente cliente;
+	Vendedor vendedor;
 	
-	public Pedido(Date data, ItemPedido itemPedido, Cliente cliente) {
+	public Pedido(Date data, ItemPedido itemPedido, Cliente cliente, Vendedor vendedor) {
 		super();
 		this.data = data;
 		this.itemPedido = itemPedido;
 		this.cliente = cliente;
+		this.vendedor = vendedor;
 	}
 	
+	public Vendedor getVendedor() {
+		return vendedor;
+	}
+
+	public void setVendedor(Vendedor vendedor) {
+		this.vendedor = vendedor;
+	}
+
 	public ItemPedido getItemPedido() {
 		return itemPedido;
 	}

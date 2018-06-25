@@ -11,9 +11,11 @@
  *-------------------------------------------*/
 package negocio;
 import java.sql.ResultSet;
+import java.util.List;
 
 import dados.*;
 import entidades.Funcionario;
+import entidades.Pedido;
 import entidades.Produto;
 import entidades.Vendedor;
 import excecoes.CPFNaoEncontradoException;
@@ -30,19 +32,20 @@ public class Fachada {
 	
 	public Fachada(){
 		//Repositório Array
-		/*IRepositorioProduto repProd = new RepProdArray();
+		IRepositorioProduto repProd = new RepProdArray();
 		IRepositorioFuncionario repFunc = new RepFuncArray();
 		IRepositorioVendProd repVendProd = new RepVendProdArray();
-				*/
-		IRepositorioProduto repProd = new RepProdBD();
+		IRepositorioPedido repPedido = new RepPedidoArray();	
+		
+		/*IRepositorioProduto repProd = new RepProdBD();
 		IRepositorioFuncionario repFunc = new RepFuncBD();
-		IRepositorioVendProd repVendProd = new RepVendProdBD();
+		IRepositorioVendProd repVendProd = new RepVendProdBD();*/
 		//IRepositorioPedido repPedido = new RepPedidoBD();
 		
 		vendProd = new CadastroVendProd(repVendProd);
 		produto = new CadastroProduto(repProd);
 		funcionario = new CadastroFuncionario(repFunc);
-		//pedido = new CadastroPedido(repPedido);
+		pedido = new CadastroPedido(repPedido);
 	}
 	
 	public static Fachada getInstance(){
@@ -65,7 +68,7 @@ public class Fachada {
 	public void atualizar(Produto produto)  {
 		this.produto.atualizar(produto);
 	}
-	public ResultSet listarProd(){
+	public List listarProd(){
 		return this.produto.listar();
 	}
 	//FIM CRUD de produto
@@ -75,7 +78,7 @@ public class Fachada {
 		this.funcionario.inserir(funcionario);
 	}
 	public Funcionario procurarFunc(String identificador)throws CPFNaoEncontradoException{
-		return (Funcionario) funcionario.procurar(identificador);
+		return funcionario.procurar(identificador);
 	}
 	public void removerFunc(String identificador)  {
 		funcionario.remover(identificador);
@@ -86,17 +89,14 @@ public class Fachada {
 	public ResultSet listarFunc(){
 		return this.funcionario.listar();
 	}
-	public ResultSet listarSubordinados(String chave){
+	public List listarSubordinados(String chave){
 		return this.funcionario.listar(chave);
 	}
 	//FIM CRUD de funcionário
 	
 	//INICIO CRUD de vendedor_produto
-	public void cadastrar(Funcionario vendedor, Produto produto){
+	public void cadastrar(Vendedor vendedor, Produto produto){
 		this.vendProd.inserir(vendedor,produto);
-	}
-	public ResultSet listarVendProd(String cpf){
-		return this.vendProd.listar(cpf);
 	}
 	public Produto procurar(String produto_nome, String cpf){
 		return this.vendProd.procurar(produto_nome, cpf);
@@ -107,20 +107,17 @@ public class Fachada {
 	public void remover(String produto_nome, String vendedor_cpf) {
 		this.vendProd.remover(produto_nome, vendedor_cpf);
 	}
+	public List listarVendProd(String cpf){
+		return this.vendProd.listar(cpf);
+	}
 	//FIM CRUD de vendedor_produto
 	
 	//INICIO CRUD de Pedido
-/*	public void cadastrar(Pedido pedido) {
+	public void cadastrar(Pedido pedido) {
 		this.pedido.inserir(pedido);
 	}
-	public Pedido procurar(String cpf) {
+	public Pedido procurarPedido(String cpf) throws CPFNaoEncontradoException {
 		return this.pedido.procurar(cpf);
 	}
-	public void atualizar(String cpf) {
-		this.pedido.atualizar(cpf);
-	}
-	public void remover(String cpf) {
-		this.pedido.remover(cpf);
-	}*/
 	//FIM CRUD de pedido
 }

@@ -38,6 +38,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.ImageIcon;
 import java.awt.SystemColor;
+import javax.swing.UIManager;
 
 public class TelaCadProd extends JFrame {
 
@@ -204,7 +205,26 @@ public class TelaCadProd extends JFrame {
 		menuBar.add(mnVendas);
 		
 		JMenuItem mntmRelatrio = new JMenuItem("Relat\u00F3rio");
+		mntmRelatrio.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				TelaRelatorioVendas.getInstance().setVisible(true);
+				dispose();
+			}
+		});
 		mnVendas.add(mntmRelatrio);
+		
+		JButton btnSair = new JButton("Sair");
+		btnSair.setBorder(UIManager.getBorder("MenuItem.border"));
+		btnSair.setBorderPainted(false);
+		btnSair.setBackground(SystemColor.control);
+		btnSair.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ValidarDados.funcionario = null;
+				TelaLogin.getInstance().setVisible(true);
+				dispose();
+			}
+		});
+		menuBar.add(btnSair);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setLayout(null);

@@ -41,6 +41,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JToolBar;
 import javax.swing.ListSelectionModel;
@@ -53,6 +54,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JSeparator;
+import javax.swing.UIManager;
 
 public class TelaCadPedido extends JFrame {
 
@@ -70,6 +72,7 @@ public class TelaCadPedido extends JFrame {
 	private JTextField textFieldQuantidade;
 	private JTextField textFieldNome;
 	private Cliente cliente;
+	private JButton btnSair;
 	
 	public static TelaCadPedido getInstance() {
 		if (instance == null)
@@ -297,12 +300,12 @@ public class TelaCadPedido extends JFrame {
 					}
 					//Listar todos os produtos do vendedor.
 					if(modeloVendProd.getRowCount() == 0){
-						ResultSet rs;
+						List produtos;
 						
-						rs = Fachada.getInstance().listarVendProd(ValidarDados.funcionario.getCpf());
-						if(rs!=null){
+						produtos = Fachada.getInstance().listarVendProd(ValidarDados.funcionario.getCpf());
+						if(produtos!=null){
 							//Insere resultados da busca na tabela.
-							ClasseAssistente.montarTabelaProduto(rs, modeloVendProd);
+							ClasseAssistente.montarTabelaProduto(produtos, modeloVendProd);
 						}
 					}
 				} catch(Exception ex) {
@@ -369,6 +372,21 @@ public class TelaCadPedido extends JFrame {
 		button.setBackground(Color.WHITE);
 		button.setBounds(22, 59, 152, 23);
 		contentPane.add(button);
+		
+		JMenuBar menuBar = new JMenuBar();
+		menuBar.setBounds(0, 0, 594, 21);
+		contentPane.add(menuBar);
+		
+		btnSair = new JButton("Sair");
+		btnSair.setBorder(UIManager.getBorder("MenuItem.border"));
+		btnSair.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ValidarDados.funcionario = null;
+				TelaLogin.getInstance().setVisible(true);
+				dispose();
+			}
+		});
+		menuBar.add(btnSair);
 		
 		
 	}

@@ -13,6 +13,8 @@
 package dados;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import entidades.Funcionario;
 import entidades.Produto;
@@ -23,17 +25,17 @@ public class RepVendProdArray implements IRepositorioVendProd{
 	public static final int TAMANHO = 1000000;
 	private int indice;
 	private int i;
-	private Vendedor[] repositorio;
+	private Produto[] repositorio;
 	
 	public RepVendProdArray() {
-		this.repositorio = new Vendedor[TAMANHO];
+		this.repositorio = new Produto[TAMANHO];
 		indice = 0;
 	}
 	
-	public int getIndice(String cpf) {
+	public int getIndice(String nome,String cpf) {
 		i = 0;
 		if (indice != 0) {
-			while (!cpf.equals(repositorio[i].getCpf())) {
+			while (!nome.equals(repositorio[i].getNome()) & !cpf.equals(repositorio[i].getDistribuido())) {
 				if (i == indice - 1) {
 					return -1;
 				} else
@@ -44,21 +46,52 @@ public class RepVendProdArray implements IRepositorioVendProd{
 		return -1;
 	}
 	
-	public void inserir(Funcionario vendedor, Produto produto){
-		
+	public boolean existe(String nome, String cpf) {
+		i = getIndice(nome,cpf);
+		if (i == -1)
+			return false;
+		else
+			return true;
 	}
-	public ResultSet listar(String cpf){
-		ResultSet rs = null;
-		return rs;
+	
+	public void inserir(Vendedor vendedor, Produto produto){
+		if (!existe(produto.getNome(),vendedor.getCpf())) {
+			produto.setDistribuido(vendedor.getCpf());
+			repositorio[indice] = produto;
+			indice++;
+		}
 	}
-	public Produto procurar(String produto_nome, String cpf){
-		Produto produto = null;
-		return produto;
+	public List listar(String cpf){
+		i = 0;
+		List produtos = new ArrayList();
+		while(i < indice){
+			if(repositorio[i].getDistribuido().equals(cpf))
+				produtos.add(repositorio[i]);
+			i++;
+		}
+		return produtos;
+	}
+	public Produto procurar(String nome, String cpf){
+		if(!existe(nome,cpf)){
+			return null;
+		}
+		return repositorio[i];
 	}
 	public void atualizar(Produto produto, String cpf){
-		
+		if (!existe(produto.getNome(),cpf)) {
+			System.err.println("Erro!");
+		}else{
+			repositorio[i] = produto;
+		}
 	}
-	public void remover(String produto_nome, String vendedor_cpf){
-		
+	public void remover(String nome, String cpf){
+		if (!existe(nome,cpf)) {
+			System.err.println("Erro!");
+		}else{
+		repositorio[i] = null;
+		repositorio[i] = repositorio[indice - 1];
+		repositorio[indice - 1] = null;
+		indice--;
+		}
 	}
 }

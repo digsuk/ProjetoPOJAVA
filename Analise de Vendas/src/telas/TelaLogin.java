@@ -54,6 +54,12 @@ public class TelaLogin extends JFrame {
 	/**
 	 * Launch the application.
 	 */
+	
+	public void limparCampos(){
+		textFieldCPF.setText("");
+		passwordField.setText("");
+	}
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -61,9 +67,11 @@ public class TelaLogin extends JFrame {
 					TelaLogin frame = new TelaLogin();
 					frame.setVisible(true);
 					
-					 /*Gerar usuário adiministrador
+					 /*Gerar usuários
 					 *Chamar apenas quando for usar repositorio Array*/
-					 //ClasseAssistente.usuarioAdm();
+					 ClasseAssistente.usuarioAdm();
+					 ClasseAssistente.usuarioGer();
+					 ClasseAssistente.usuarioVen();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -140,6 +148,7 @@ public class TelaLogin extends JFrame {
 				String senha = passwordField.getText();
 				if (ValidarDados.validarCampoVazio(cpf, senha)) {
 					if (ValidarDados.validarLogin(cpf, senha)) {
+						limparCampos();
 						switch (ValidarDados.identificaFuncao()) {
 						case ValidarDados.GERENTE:
 							TelaCadProd.getInstance().setVisible(true);

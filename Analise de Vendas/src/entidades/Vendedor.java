@@ -13,11 +13,22 @@
 package entidades;
 
 public class Vendedor extends Funcionario{
-	Produto[] produtos;
+	String subalterno;
 	
-	public Vendedor(String nome, String cpf, String email, String senha, String funcao, String chave, Produto[] produtos) {
-		super(nome, cpf, email, senha, funcao, chave);
-		this.produtos = produtos;
+	public Vendedor(){
+		
+	}
+	
+	public Vendedor(String nome, String cpf, String email, String senha, String funcao, String subalterno){
+		super(nome, cpf, email, senha, funcao);
+		this.subalterno = subalterno;
 	}
 
+	public String getSubalterno() {
+		return subalterno;
+	}
+
+	public void setSubalterno(String subalterno) {
+		this.subalterno = subalterno;
+	}
 }

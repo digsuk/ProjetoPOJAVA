@@ -15,8 +15,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
+import entidades.Administrador;
 import entidades.Funcionario;
+import entidades.Vendedor;
 import excecoes.CPFNaoEncontradoException;
 import interfaces.IRepositorioFuncionario;
 
@@ -34,14 +38,26 @@ public class RepFuncBD extends RepositorioBD implements IRepositorioFuncionario{
 	/*Método que recebe o funcionario, monta o camando sql
 	 *de inserção e grava no banco de dados*/
 	public void inserir(Funcionario funcionario) {
+		
+		String valores;
 		/*Construir comando sql para inserir os valores 
 		 *dos atributos do funcionario no repositorio de banco de dados */
-		String valores =  "values (default,\'" + funcionario.getNome()   + "\',\'" 
-				 							   + funcionario.getCpf()    + "\',\'" 
-				 							   + funcionario.getEmail()  + "\',\'" 
-				 							   + funcionario.getSenha()  + "\',\'"
-				 							   + funcionario.getFuncao() + "\',\'"
-				 							   + funcionario.getChave()  + "\')";
+		if( funcionario instanceof Vendedor ){
+			valores = "values (default,\'" + funcionario.getNome()   + "\',\'" 
+					   		 + funcionario.getCpf()    + "\',\'" 
+					   		 + funcionario.getEmail()  + "\',\'" 
+					   		 + funcionario.getSenha()  + "\',\'"
+					   		 + funcionario.getFuncao() + "\',\'"
+					   		 + ((Vendedor)funcionario).getSubalterno() + "\')";
+		}else{
+			valores = "values (default,\'" + funcionario.getNome()   + "\',\'" 
+					   					   + funcionario.getCpf()    + "\',\'" 
+					   					   + funcionario.getEmail()  + "\',\'" 
+					   					   + funcionario.getSenha()  + "\',\'"
+					   					   + funcionario.getFuncao() + "\',\'"
+					   					   + ""                      + "\')";
+		}
+		
 		String comando = INSERIR + CAMPOS + valores;
 		//Grava no banco de dados
 		try {
@@ -57,8 +73,8 @@ public class RepFuncBD extends RepositorioBD implements IRepositorioFuncionario{
 		}
 	}
 
-	public Funcionario procurar(String identificador) throws CPFNaoEncontradoException{
-		String where = "WHERE cpf = " + "\'"+identificador+"\'";
+	public Funcionario procurar(String cpf) throws CPFNaoEncontradoException{
+		String where = "WHERE cpf = " + "\'"+cpf+"\'";
 		String comando = PROCURAR + where;
 		try {
 			Statement stm = con.createStatement(1, 0);
@@ -68,11 +84,10 @@ public class RepFuncBD extends RepositorioBD implements IRepositorioFuncionario{
 											  rs.getString("cpf"),
 											  rs.getString("email"),
 											  rs.getString("senha"),
-											  rs.getString("funcao"),
-											  rs.getString("chave"));
+											  rs.getString("funcao"));
 				return funcionario;
 			} else {
-				CPFNaoEncontradoException cpfnee = new CPFNaoEncontradoException(identificador);
+				CPFNaoEncontradoException cpfnee = new CPFNaoEncontradoException(cpf);
 				throw cpfnee;
 			}
 		} catch (SQLException e) {
@@ -99,15 +114,21 @@ public class RepFuncBD extends RepositorioBD implements IRepositorioFuncionario{
 		}
 	}
 	
-	public ResultSet listar(String chave){
+	public List listar(String chave){
+		List vendedores = new ArrayList();
 		String where = "WHERE chave = " + "\'"+chave+"\'";
 		String comando = PROCURAR + where;
 		try {
 			Statement stm = con.createStatement(1, 0);
 			ResultSet rs = stm.executeQuery(comando);
 			if (rs != null) {
-				System.out.println("Sucesso!");
-				return rs;
+				while(rs.next()){
+					Vendedor v = new Vendedor();
+					v.setNome(rs.getString("nome"));
+					v.setCpf(rs.getString("cpf"));
+					vendedores.add(v);
+				}
+				return vendedores;
 			} else {
 				System.err.println("Erro!");
 				return null;
@@ -136,13 +157,23 @@ public class RepFuncBD extends RepositorioBD implements IRepositorioFuncionario{
 	public void atualizar(Funcionario funcionario) {
 		try {
 			PreparedStatement pstm = con.prepareStatement(ATUALIZAR);
-			pstm.setString(1, funcionario.getNome());
-			pstm.setString(2, funcionario.getCpf());
-			pstm.setString(3, funcionario.getEmail());
-			pstm.setString(4, funcionario.getSenha());
-			pstm.setString(5, funcionario.getFuncao());
-			pstm.setString(6, funcionario.getChave());
-			pstm.setString(7, funcionario.getCpf());
+			if(funcionario instanceof Vendedor){
+				pstm.setString(1, funcionario.getNome());
+				pstm.setString(2, funcionario.getCpf());
+				pstm.setString(3, funcionario.getEmail());
+				pstm.setString(4, funcionario.getSenha());
+				pstm.setString(5, funcionario.getFuncao());
+				pstm.setString(6, ((Vendedor) funcionario).getSubalterno());
+				pstm.setString(7, funcionario.getCpf());
+			}else{
+				pstm.setString(1, funcionario.getNome());
+				pstm.setString(2, funcionario.getCpf());
+				pstm.setString(3, funcionario.getEmail());
+				pstm.setString(4, funcionario.getSenha());
+				pstm.setString(5, funcionario.getFuncao());
+				pstm.setString(6, "");
+				pstm.setString(7, funcionario.getCpf());
+			}
 			int res = pstm.executeUpdate();
 			if (res > 0) {
 				System.out.println("Sucesso!");
