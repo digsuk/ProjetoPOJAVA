@@ -12,15 +12,18 @@
 package entidades;
 
 public class Funcionario {
-	private String nome, cpf, email, senha, funcao, chave;
-
-	public Funcionario(String nome, String cpf, String email, String senha, String funcao, String chave) {
+	private String nome, cpf, email, senha, funcao;
+	
+	public Funcionario(){
+		
+	}
+	
+	public Funcionario(String nome, String cpf, String email, String senha, String funcao) {
 		this.nome = nome;
 		this.cpf = cpf;
 		this.email = email;
 		this.senha = senha;
 		this.funcao = funcao;
-		this.chave = chave;
 	}
 	
 	public String getNome() {
@@ -29,14 +32,6 @@ public class Funcionario {
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	public String getChave() {
-		return chave;
-	}
-
-	public void setChave(String chave) {
-		this.chave = chave;
 	}
 
 	public String getCpf() {

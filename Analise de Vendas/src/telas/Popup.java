@@ -25,6 +25,7 @@ import negocio.Mensagem;
 public class Popup {
 	private static final String MSGALERT = "Mensagem de alerta";
 	private static final String MSGERROR = "Mensagem de erro";
+	private static final String MSGINFO = "Informações de ajuda";
 	private static int confirm;
 
 public static void ConfirmarCadastro() {
@@ -86,5 +87,11 @@ public static void ConfirmarCadastro() {
 	}
 	public static void prodQuantErro(){
 		JOptionPane.showMessageDialog(null, Mensagem.CADQUANTERRO,MSGALERT,JOptionPane.WARNING_MESSAGE);
+	}
+	public static void infoCadProd(){
+		JOptionPane.showMessageDialog(null, Mensagem.AJUDACADPROD,MSGINFO,JOptionPane.INFORMATION_MESSAGE);
+	}
+	public static void infoGerProd(){
+		JOptionPane.showMessageDialog(null, Mensagem.AJUDAGERPROD,MSGINFO,JOptionPane.INFORMATION_MESSAGE);
 	}
 }

@@ -32,6 +32,7 @@ import javax.swing.JTable;
 import entidades.Administrador;
 import entidades.Gerente;
 import entidades.Produto;
+import entidades.Vendedor;
 
 public class ClasseAssistente {
 	
@@ -99,40 +100,12 @@ public class ClasseAssistente {
         }
 	}
 	
-	public static void montarTabelaProduto(ResultSet rs, ModeloTabelaVendProd modelo){
-		List produtos = new ArrayList();
-		try{	
-			while(rs.next()){
-				Produto p = new Produto();
-				p.setNome(rs.getString("produto_nome"));
-				p.setDescricao(rs.getString("descricao"));
-				p.setQuantidade(rs.getInt("quantidade"));
-				p.setValor(rs.getDouble("valor"));
-				produtos.add(p);
-				p = null;	
-			}
+	public static void montarTabelaProduto(List produtos, ModeloTabelaVendProd modelo){
 			modelo.addProdutoList(produtos);
-		}catch(SQLException sqle){
-			
-		}
 	}
 	
-	public static void montarTabelaProduto(ResultSet rs, ModeloTabelaProduto modelo){
-		List produtos = new ArrayList();
-		try{	
-			while(rs.next()){
-				Produto p = new Produto();
-				p.setNome(rs.getString("nome"));
-				p.setDescricao(rs.getString("descricao"));
-				p.setQuantidade(rs.getInt("quantidade"));
-				p.setValor(rs.getDouble("valor"));
-				produtos.add(p);
-				p = null;	
-			}
+	public static void montarTabelaProduto(List produtos, ModeloTabelaProduto modelo){	
 			modelo.addProdutoList(produtos);
-		}catch(SQLException sqle){
-			
-		}
 	}
 
 	public static void montarTabelaProduto(Produto produto, ModeloTabelaProduto modelo){		
@@ -143,7 +116,7 @@ public class ClasseAssistente {
 	
 	//Monta o comboBox da tela de Gerenciamento de produtos.
 	public static List montaComboBox(JComboBox comboBox){
-		ResultSet vendedores;
+		List vendedores;
 		String nome;
 		
 		//Recuperr cpf do gerente logado.
@@ -157,23 +130,38 @@ public class ClasseAssistente {
 		nome = "";
 		cpf.add("");
 		comboBox.addItem(nome);
-		try{
-			while(vendedores.next()){
-				nome = vendedores.getString("nome");
-				cpf.add(vendedores.getString("cpf"));
-				//Montar comboBox com os resultlados recuperados.
-				comboBox.addItem(nome);
+			if(vendedores != null){
+				int i = 0;
+				while(i < vendedores.size()){
+					nome = ((Vendedor)vendedores.get(i)).getNome();
+					cpf.add(((Vendedor)vendedores.get(i)).getCpf());
+					//Montar comboBox com os resultados recuperados.
+					comboBox.addItem(nome);
+					i++;
+				}
 			}
 			return cpf;
-		}catch(SQLException sqle){
-			return null;
-		}
 	}
 	
 	//Gerar usuario para teste com perfil de administrador
 	public static void usuarioAdm(){
-		Administrador administrador = new Administrador("Administrador do Programa","12345678910","adm.analise.vendas@gmail.com",
-								 	  "123456","Administrador","01234567899");		
+		Administrador administrador = new Administrador("Administrador do Programa",
+														"12345678910","adm.analise.vendas@gmail.com",
+														"123456","Administrador");		
 		Fachada.getInstance().cadastrar(administrador);
+	}
+	//Gerar usuario para teste com perfil de gerente
+	public static void usuarioGer(){
+		Gerente gerente = new Gerente("Gerente de Vendedor",
+									  "22345678910","adm.analise.vendas@gmail.com",
+									  "123456","Gerente");		
+		Fachada.getInstance().cadastrar(gerente);
+	}
+	//Gerar usuario para teste com perfil de vendedor
+	public static void usuarioVen(){
+		Vendedor vendedor = new Vendedor("Vendedor de Produtos",
+										 "32345678910","adm.analise.vendas@gmail.com",
+										 "123456","Vendedor","22345678910");		
+		Fachada.getInstance().cadastrar(vendedor);
 	}
 }

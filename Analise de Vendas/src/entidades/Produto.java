@@ -14,7 +14,7 @@ package entidades;
 import excecoes.ProdutoQuantidadeException;
 
 public class Produto {
-	private String nome, descricao;
+	private String nome, descricao, distribuido;
 	private int quantidade;
 	private double valor;
 	
@@ -29,6 +29,14 @@ public class Produto {
 		this.valor = valor;
 	}
 	
+	public String getDistribuido() {
+		return distribuido;
+	}
+
+	public void setDistribuido(String distribuido) {
+		this.distribuido = distribuido;
+	}
+
 	public String getNome() {
 		return nome;
 	}

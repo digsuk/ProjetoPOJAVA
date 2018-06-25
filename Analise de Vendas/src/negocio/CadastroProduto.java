@@ -11,6 +11,7 @@
  *-------------------------------------------*/
 package negocio;
 import java.sql.ResultSet;
+import java.util.List;
 
 import entidades.Produto;
 import interfaces.IRepositorioProduto;
@@ -32,7 +33,7 @@ public class CadastroProduto {
 	public void atualizar(Produto produto){
 		repositorio.atualizar(produto);
 	}
-	public ResultSet listar(){
+	public List listar(){
 		return repositorio.listar();
 	}
 }

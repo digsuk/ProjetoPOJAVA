@@ -15,7 +15,10 @@ package dados;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import entidades.Produto;
 import interfaces.IRepositorioProduto;
@@ -79,14 +82,22 @@ public class RepProdBD extends RepositorioBD implements IRepositorioProduto{
 		}
 	}
 
-	public ResultSet listar(){
+	public List listar(){
 		String comando = PROCURAR;
+		List produtos = new ArrayList();
 		try {
 			Statement stm = con.createStatement(1, 0);
 			ResultSet rs = stm.executeQuery(comando);
 			if (rs != null) {
-				System.out.println("Sucesso!");
-				return rs;
+				while(rs.next()){
+					Produto p = new Produto();
+					p.setNome(rs.getString("nome"));
+					p.setDescricao(rs.getString("descricao"));
+					p.setQuantidade(rs.getInt("quantidade"));
+					p.setValor(rs.getDouble("valor"));
+					produtos.add(p);	
+				}
+				return produtos;
 			} else {
 				System.err.println("Erro!");
 				return null;

@@ -1,8 +1,10 @@
 package negocio;
 
 import entidades.Produto;
+import entidades.Vendedor;
 
 import java.sql.ResultSet;
+import java.util.List;
 
 import entidades.Funcionario;
 import interfaces.IRepositorioVendProd;
@@ -13,10 +15,10 @@ private IRepositorioVendProd repositorio;
 	public CadastroVendProd(IRepositorioVendProd repositorio) {
 		this.repositorio = repositorio;
 	}
-	public void inserir(Funcionario vendedor,Produto produto){
+	public void inserir(Vendedor vendedor,Produto produto){
 		repositorio.inserir(vendedor,produto);
 	}
-	public ResultSet listar(String cpf){
+	public List listar(String cpf){
 		return repositorio.listar(cpf);
 	}
 	public Produto procurar(String produto_nome, String cpf){
