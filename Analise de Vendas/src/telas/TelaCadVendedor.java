@@ -1,16 +1,16 @@
+package telas;
+
 /*------------------------------------------------
  * Autor: Diogo Souza
  * Data:30/06/2018
  *------------------------------------------------
- * Descrição: Tela de Cadastro de Gerente,
- * feito pelo administrador
+ * Descrição: Tela de Cadastro de Vendedor,
+ * feito pelo gerente
  *------------------------------------------------
  * Histórico de modificação
  * Data             Autor                   Descrição
  *
  *----------------------------------------------------------------------*/
- 
-package telas;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -19,16 +19,26 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import entidades.Vendedor;
+import negocio.Fachada;
+import negocio.Mensagem;
+import negocio.ValidarDados;
+
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 
-public class TelaCadGerente extends JFrame {
+public class TelaCadVendedor extends JFrame {
 
 	private JPanel contentPane;
 	private static TelaCadGerente instance;
@@ -67,7 +77,7 @@ public class TelaCadGerente extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public TelaCadGerente() {
+	public TelaCadVendedor() {
 		setTitle("An\u00E1lise de Vendas");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -115,6 +125,35 @@ public class TelaCadGerente extends JFrame {
 		textFieldEmail.setColumns(10);
 		
 		JButton btnCadastrar = new JButton("Cadastrar");
+		btnCadastrar.addActionListener(new ActionListener() {
+			public void actionPerformed1(ActionEvent arg0) {
+				if(ValidarDados.validarCampoVazio(textFieldNome.getText(), textFieldCPF.getText(), 
+						textFieldEmail.getText())) {
+					try {
+						Vendedor vendedorCadastrado;
+						Vendedor vendedor = new Vendedor(textFieldNome.getText(), textFieldCPF.getText(),
+								textFieldEmail.getText());
+						vendedorCadastrado = Fachada.getInstance().procurarVendedor(textFieldCPF.getText());
+						if(vendedorCadastrado == null) {
+							Fachada.getInstance().cadastrarVendedor(vendedor);
+							JOptionPane.showMessageDialog(null, Mensagem.CADVENDSUC);
+							limparcampos();
+						}else {
+							Popup.VendCadErro();
+						}
+						
+					}catch(NumberFormatException nfe) {
+						Popup.numberFormat();
+					}
+				}
+			}
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		btnCadastrar.setBounds(204, 152, 89, 23);
 		panel.add(btnCadastrar);
 		

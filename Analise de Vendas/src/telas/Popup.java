@@ -10,6 +10,7 @@
  * 09/05/2018 |  Diogo Souza      | Adição do método confirmar exclusão;
  * 26/05/2018 |  Jonathan Moura   | Adição de métodos e constantes.
  * 02/06/2018 |  Diogo Souza      | Adição de métodos e constantes.
+ * 30/06/2018 |  Diogo Souza      | Adição de métodos e constantes.
  *----------------------------------------------------------------------*/
 
 package telas;
@@ -93,5 +94,8 @@ public static void ConfirmarCadastro() {
 	}
 	public static void infoGerProd(){
 		JOptionPane.showMessageDialog(null, Mensagem.AJUDAGERPROD,MSGINFO,JOptionPane.INFORMATION_MESSAGE);
+	}
+	public static void VendCadErro() {
+		JOptionPane.showMessageDialog(null, Mensagem.CADVENDERRO,MSGALERT,JOptionPane.WARNING_MESSAGE);
 	}
 }

@@ -7,8 +7,8 @@
  *---------------------------------------------
  * Histórico de modificação
  * Data    Autor    Descrição
- *       |        |
- *-------------------------------------------*/
+ *  30/06/2018 | Diogo Souza  | Adição de método validarCampoVazio.
+ *------------------------------------------------------------------*/
 
 package negocio;
 
@@ -38,6 +38,19 @@ public class ValidarDados {
 			return false;
 		}
 		return true;
+	}
+	
+	public static boolean validarCampoVazio(String text, String text2, String text3) {
+	    try {
+	    	if(text.equals("") || text2.equals("") || text3.equals("")) {
+	    		CampoVazioException cve = new CampoVazioException();
+	    		throw cve;
+	    	}
+	    } catch(CampoVazioException cve) {
+	    	Popup.campoVazio(cve);
+		return false;
+	    }
+	    return true;
 	}
 
 	public static boolean validarCampoVazio(String arg0, String arg1) {
@@ -105,4 +118,6 @@ public class ValidarDados {
 		}
 		return true;
 	}
+
+	
 }
