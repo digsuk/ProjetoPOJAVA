@@ -27,17 +27,18 @@ public class RepVendProdBD extends RepositorioBD implements IRepositorioVendProd
 	private static final String PROCURAR  = "SELECT * FROM vendedor_produto ";
 	private static final String ATUALIZAR = "UPDATE vendedor_produto SET quantidade = ? WHERE produto_nome = ? AND vendedor_cpf = ?";
 	private static final String REMOVER   = "DELETE FROM vendedor_produto WHERE produto_nome = AND vendedor_cpf = ?";
-	private static final String CAMPOS    = "(id, produto_nome, descricao, quantidade, valor, vendedor_cpf) ";	
+	private static final String CAMPOS    = "(produto_nome, descricao, quantidade, valor, vendedor_cpf, id) ";	
 	
-	public void inserir(Vendedor vendedor, Produto produto){
+	public void inserir(String vendedorCpf, Produto produto){
 		/*Construir comando sql para inserir os valores 
 		 *dos atributos do produto e do vendedor 
 		 *no repositorio de banco de dados */
-		String valores =  "values (default,\'" + produto.getNome() 		 + "\',\'" 
+		String valores =  "values (\'" + produto.getNome() 		 		 + "\',\'" 
 				 							   + produto.getDescricao()  + "\'," 
 				 							   + produto.getQuantidade() + "," 
 				 							   + produto.getValor() 	 + ",\'" 
-											   + vendedor.getCpf()	     + "\')";
+											   + vendedorCpf	     	 + "\',"
+											   + "default )";
 		String comando = INSERIR + CAMPOS + valores;
 		//Grava no banco de dados
 		try {
@@ -65,10 +66,10 @@ public class RepVendProdBD extends RepositorioBD implements IRepositorioVendProd
 											  rs.getString("descricao"),
 											  rs.getInt("quantidade"),
 											  rs.getDouble("valor"));
-				System.out.println("Sucesso!");
+				System.out.println("Produto inserido!");
 				return produto;
 			} else {
-				System.err.println("Erro!");
+				System.err.println("Produto ainda não inserido!");
 				return null;
 			}
 		} catch (Exception e) {

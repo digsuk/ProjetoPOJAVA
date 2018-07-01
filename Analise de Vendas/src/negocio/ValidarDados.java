@@ -12,6 +12,12 @@
 
 package negocio;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import javax.swing.JOptionPane;
 
 import entidades.Funcionario;
@@ -104,5 +110,23 @@ public class ValidarDados {
 			return false;
 		}
 		return true;
+	}
+	
+	public static boolean validarData(String dataDe, String dataAte) {
+		try{
+			if(!dataDe.equals("") && !dataAte.equals("")){
+				DateFormat dataFormato = new SimpleDateFormat("dd/MM/yyyy");
+				Date de = dataFormato.parse(dataDe);
+				Date ate = dataFormato.parse(dataAte);
+				
+				if(de.after(ate)){
+					return false;
+				}
+			}	
+			return true;
+			
+		}catch(ParseException pe){
+			return false;
+		}
 	}
 }

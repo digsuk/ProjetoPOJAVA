@@ -1,5 +1,5 @@
 /*---------------------------------------------
- * Autor: Diogo Souza
+ * Autor: Jonathan Moura
  * Data:15/06/2018
  *---------------------------------------------
  * Descrição: Repositorio banco de dados
@@ -17,19 +17,24 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
+import entidades.Cliente;
+import entidades.ItemPedido;
 import entidades.Pedido;
 import entidades.Produto;
+import entidades.Vendedor;
 import interfaces.IRepositorioPedido;
 import telas.TelaEditProd;
 
-public class RepPedidoBD {
-	/*
-	private static final String INSERIR   = "INSERT INTO produto ";
-	private static final String PROCURAR  = "SELECT * FROM produto ";
-	private static final String REMOVER   = "DELETE FROM produto WHERE nome = ";
-	private static final String ATUALIZAR = "UPDATE produto SET nome = ?, descricao = ?, quantidade = ?, valor = ? WHERE nome = ?";
-	private static final String CAMPOS    = "(id, nome, descricao, quantidade, valor) ";
+public class RepPedidoBD extends RepositorioBD implements IRepositorioPedido{
+	
+	private static final String INSERIR   = "INSERT INTO pedido ";
+	private static final String PROCURAR  = "SELECT * FROM pedido ";
+	private static final String CAMPOS    = "(vendedor_cpf, vendedor_nome, cliente_cpf, cliente_cnpj, "
+											+ "cliente_nome, produto_nome, quantidade, valor_total, data, id) ";
 	
 	public RepPedidoBD() {
 		super();
@@ -37,14 +42,16 @@ public class RepPedidoBD {
 	
 	public void inserir(Pedido pedido) {
 		
-		String valores =  "values (default,\'" + pedido.getData().getDay()	  + "\',\'" 
-				           + pedido.getData().getMonth()   + "\'," 
-						   + pedido.getData().getYear()   + "\',"
-						   + pedido.getItemPedido().getValorTotal()   + "\',"
-						   + pedido.getItemPedido().getQuantidade()   + "\',"
-						   + pedido.getItemPedido().getProduto().getNome()   + "\',"
-						   + pedido.getCliente().getCpf()   + "\'," ;
-				   
+		String valores =  "values (\'" + pedido.getVendedor().getCpf() + "\',\'" 
+				           + pedido.getVendedor().getNome() + "\',\'" 
+						   + pedido.getCliente().getCpf() + "\',\'"
+						   + pedido.getCliente().getCnpj() + "\',\'"
+						   + pedido.getCliente().getNome() + "\',\'"
+						   + pedido.getItemPedido().getProduto() + "\',"
+						   + pedido.getItemPedido().getQuantidade() + ","
+						   + pedido.getItemPedido().getValorTotal() + ",\'"
+						   + pedido.getData() + "\'," 
+				   		   + "default )";
 		
 		String comando = INSERIR + CAMPOS + valores;
 		
@@ -61,70 +68,51 @@ public class RepPedidoBD {
 		}
 		
 	}
-	
-	public void remover(String identificador) {
 		
-		String comando = REMOVER + "\'"+identificador+"\'";
-		try {
-			Statement stm = con.createStatement();
-			int res = stm.executeUpdate(comando);
-			if (res > 0) {
-				System.out.println("Sucesso!");
-			} else {
-				System.err.println("Erro!");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public Pedido procurar(String identificador) {
+	public List procurar(String cpf) {
 		
-		String where = "WHERE nome = " + "\'"+identificador+"\'";
+		String where = "WHERE vendedor_cpf = " + "\'"+cpf+"\'";
 		String comando = PROCURAR + where;
+		List pedidos = new ArrayList();
 		try {
 			Statement stm = con.createStatement(1, 0);
 			ResultSet rs = stm.executeQuery(comando);
-			if (rs.next()) {
-			Pedido pedido = new Pedido(rs.getDate("Dia"),
-						rs.getDate("Mês"),
-						rs.getDate("Ano"),
-						rs.getDouble("Valor Total"),
-						rs.getInt("Quantidade"),
-						rs.getString("Nome"),
-						rs.getString("Cpf"));
-				System.out.println("Sucesso!");
-				return pedido;
+			while(rs.next()){
+				Pedido pedido = new Pedido();
+				Vendedor vendedor = new Vendedor();
+				Cliente cliente = new Cliente();
+				ItemPedido itemPedido = new ItemPedido();
+				String data;
+								
+				vendedor.setNome(rs.getString("vendedor_nome"));
+				vendedor.setCpf(rs.getString("vendedor_cpf"));
+				
+				cliente.setNome(rs.getString("cliente_nome"));
+				cliente.setCpf(rs.getString("cliente_cpf"));
+				cliente.setCnpj(rs.getString("cliente_cnpj"));
+			
+				itemPedido.setProduto(rs.getString("produto_nome"));
+				itemPedido.setQuantidade(rs.getInt("quantidade"));
+				itemPedido.setValorTotal(rs.getDouble("valor_total"));
+				
+				data = rs.getString("data");
+				
+				pedido.setCliente(cliente);
+				pedido.setVendedor(vendedor);
+				pedido.setItemPedido(itemPedido);
+				pedido.setData(data);
+					
+				pedidos.add(pedido);
+			}
+			if(!pedidos.isEmpty()){
+				return pedidos;
 			} else {
-				System.err.println("Erro!");
-				return null;
+				System.err.println("Pedido não encontrado");
+				return new ArrayList();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
+			return new ArrayList();
 		}
 	}
-	
-	public void atualizar(Pedido pedido) {
-		
-		try {
-			PreparedStatement pstm = con.prepareStatement(ATUALIZAR);
-			pstm.setInt(1, pedido.getData().getDay());
-			pstm.setInt(2, pedido.getData().getMonth());
-			pstm.setInt(3, pedido.getData().getYear());
-			pstm.setDouble(4, pedido.getItemPedido().getValorTotal());
-			pstm.setInt(5, pedido.getItemPedido().getQuantidade());
-			pstm.setString(6, pedido.getItemPedido().getProduto().getNome());
-			pstm.setString(7, pedido.getCliente().getCpf());
-			pstm.setString(8, TelaEditProd.getInstance().pedidoEditado.getNome());
-			int res = pstm.executeUpdate();
-			if (res > 0) {
-				System.out.println("Sucesso!");
-			} else {
-				System.err.println("Erro!");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}*/
 }

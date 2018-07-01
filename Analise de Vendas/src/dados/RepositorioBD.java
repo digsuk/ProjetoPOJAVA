@@ -21,13 +21,13 @@ public class RepositorioBD {
 	protected static Connection con;
 
 	public RepositorioBD() {
-/*		url = "jdbc:postgresql://localhost:5432/postgres";
+		url = "jdbc:postgresql://localhost:5432/postgres";
 		usuario = "postgres";
 		senha = "123456";
-*/		url = "jdbc:postgresql://analise-de-vendas.cm0cizk23hog.sa-east-1.rds.amazonaws.com/analiseVendas";
+/*		url = "jdbc:postgresql://analise-de-vendas.cm0cizk23hog.sa-east-1.rds.amazonaws.com/analiseVendas";
 		usuario = "JonathanMoura";
 		senha = "123456789";
-		try {
+*/		try {
 			Class.forName("org.postgresql.Driver");
 			con = DriverManager.getConnection(url, usuario, senha);
 			System.out.println("Conexão realizada com sucesso!");

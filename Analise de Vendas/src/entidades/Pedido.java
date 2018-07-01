@@ -13,12 +13,16 @@ package entidades;
 import java.util.Date;
 
 public class Pedido {
-	private Date data; 
+	private String data; 
 	private ItemPedido itemPedido;
 	private Cliente cliente;
-	Vendedor vendedor;
+	private Vendedor vendedor;
 	
-	public Pedido(Date data, ItemPedido itemPedido, Cliente cliente, Vendedor vendedor) {
+	public Pedido(){
+		
+	}
+	
+	public Pedido(String data, ItemPedido itemPedido, Cliente cliente, Vendedor vendedor) {
 		super();
 		this.data = data;
 		this.itemPedido = itemPedido;
@@ -50,10 +54,10 @@ public class Pedido {
 		this.cliente = cliente;
 	}
 
-	public Date getData() {
+	public String getData() {
 		return data;
 	}
-	public void setData(Date data) {
+	public void setData(String data) {
 		this.data = data;
 	}
 

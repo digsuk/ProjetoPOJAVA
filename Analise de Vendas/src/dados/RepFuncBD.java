@@ -29,7 +29,7 @@ public class RepFuncBD extends RepositorioBD implements IRepositorioFuncionario{
 	private static final String PROCURAR  = "SELECT * FROM funcionario ";
 	private static final String REMOVER   = "DELETE FROM funcionario WHERE cpf = ";
 	private static final String ATUALIZAR = "UPDATE funcionario SET nome = ?, cpf = ?, email = ?, senha = ?, funcao = ? chave = ? WHERE cpf = ?";
-	private static final String CAMPOS    = "(id, nome, cpf, email, senha, funcao, chave) ";	
+	private static final String CAMPOS    = "(nome, cpf, email, senha, funcao, chave, id) ";	
 	
 	public RepFuncBD(){
 		super();
@@ -43,19 +43,21 @@ public class RepFuncBD extends RepositorioBD implements IRepositorioFuncionario{
 		/*Construir comando sql para inserir os valores 
 		 *dos atributos do funcionario no repositorio de banco de dados */
 		if( funcionario instanceof Vendedor ){
-			valores = "values (default,\'" + funcionario.getNome()   + "\',\'" 
+			valores = "values (\'" + funcionario.getNome()   + "\',\'" 
 					   		 + funcionario.getCpf()    + "\',\'" 
 					   		 + funcionario.getEmail()  + "\',\'" 
 					   		 + funcionario.getSenha()  + "\',\'"
 					   		 + funcionario.getFuncao() + "\',\'"
-					   		 + ((Vendedor)funcionario).getSubalterno() + "\')";
+					   		 + ((Vendedor)funcionario).getSubalterno() + "\',"
+					   		 + "default	)";
 		}else{
-			valores = "values (default,\'" + funcionario.getNome()   + "\',\'" 
+			valores = "values (\'" + funcionario.getNome()   + "\',\'" 
 					   					   + funcionario.getCpf()    + "\',\'" 
 					   					   + funcionario.getEmail()  + "\',\'" 
 					   					   + funcionario.getSenha()  + "\',\'"
 					   					   + funcionario.getFuncao() + "\',\'"
-					   					   + ""                      + "\')";
+					   					   + ""                      + "\',"
+										   + "default )";
 		}
 		
 		String comando = INSERIR + CAMPOS + valores;

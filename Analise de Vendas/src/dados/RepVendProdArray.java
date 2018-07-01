@@ -34,8 +34,9 @@ public class RepVendProdArray implements IRepositorioVendProd{
 	
 	public int getIndice(String nome,String cpf) {
 		i = 0;
+		boolean flag = true;
 		if (indice != 0) {
-			while (!nome.equals(repositorio[i].getNome()) & !cpf.equals(repositorio[i].getDistribuido())) {
+			while (!(nome.equals(repositorio[i].getNome()) & cpf.equals(repositorio[i].getDistribuido()))) {
 				if (i == indice - 1) {
 					return -1;
 				} else
@@ -54,9 +55,9 @@ public class RepVendProdArray implements IRepositorioVendProd{
 			return true;
 	}
 	
-	public void inserir(Vendedor vendedor, Produto produto){
-		if (!existe(produto.getNome(),vendedor.getCpf())) {
-			produto.setDistribuido(vendedor.getCpf());
+	public void inserir(String vendedorCpf, Produto produto){
+		if (!existe(produto.getNome(),vendedorCpf)) {
+			produto.setDistribuido(vendedorCpf);
 			repositorio[indice] = produto;
 			indice++;
 		}

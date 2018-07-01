@@ -70,7 +70,7 @@ public class Produto {
 	}
 	
 	public void retirarProduto(int quantidade) throws ProdutoQuantidadeException{
-		if(this.quantidade > quantidade){
+		if(this.quantidade >= quantidade){
 			this.quantidade = this.quantidade - quantidade;
 		}else{
 			throw new ProdutoQuantidadeException();

@@ -15,8 +15,8 @@ private IRepositorioVendProd repositorio;
 	public CadastroVendProd(IRepositorioVendProd repositorio) {
 		this.repositorio = repositorio;
 	}
-	public void inserir(Vendedor vendedor,Produto produto){
-		repositorio.inserir(vendedor,produto);
+	public void inserir(String vendedorCpf,Produto produto){
+		repositorio.inserir(vendedorCpf,produto);
 	}
 	public List listar(String cpf){
 		return repositorio.listar(cpf);

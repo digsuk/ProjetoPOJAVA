@@ -13,6 +13,10 @@ package entidades;
 public class Cliente {
 	private String cpf, cnpj, nome;
 	
+	public Cliente(){
+		
+	}
+	
 	public Cliente(String cpf, String cnpj, String nome) {
 		this.cpf = cpf;
 		this.cnpj = cnpj;

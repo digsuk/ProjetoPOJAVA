@@ -28,6 +28,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
+import javax.swing.table.AbstractTableModel;
 
 import entidades.Administrador;
 import entidades.Gerente;
@@ -100,15 +101,15 @@ public class ClasseAssistente {
         }
 	}
 	
-	public static void montarTabelaProduto(List produtos, ModeloTabelaVendProd modelo){
+	public static void montarTabela(List produtos, ModeloTabelaVendProd modelo){
 			modelo.addProdutoList(produtos);
 	}
 	
-	public static void montarTabelaProduto(List produtos, ModeloTabelaProduto modelo){	
+	public static void montarTabela(List produtos, ModeloTabelaProduto modelo){	
 			modelo.addProdutoList(produtos);
 	}
 
-	public static void montarTabelaProduto(Produto produto, ModeloTabelaProduto modelo){		
+	public static void montarTabela(Produto produto, ModeloTabelaProduto modelo){		
 		if(produto != null){
 			modelo.addProduto(produto);
 		}

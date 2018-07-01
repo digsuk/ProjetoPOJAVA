@@ -21,8 +21,10 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import entidades.Cliente;
+import entidades.ItemPedido;
 import entidades.Pedido;
 import entidades.Produto;
+import entidades.Vendedor;
 import excecoes.ProdutoQuantidadeException;
 import negocio.ClasseAssistente;
 import negocio.Fachada;
@@ -38,6 +40,7 @@ import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -55,6 +58,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JSeparator;
 import javax.swing.UIManager;
+import java.awt.SystemColor;
 
 public class TelaCadPedido extends JFrame {
 
@@ -73,6 +77,8 @@ public class TelaCadPedido extends JFrame {
 	private JTextField textFieldNome;
 	private Cliente cliente;
 	private JButton btnSair;
+	private JButton btnCadastrar;
+	private ArrayList<Produto> produtoVendido = new ArrayList();
 	
 	public static TelaCadPedido getInstance() {
 		if (instance == null)
@@ -81,7 +87,9 @@ public class TelaCadPedido extends JFrame {
 	}
 	
 	public void limparCampos() {
-		
+		deleteInstance();
+		dispose();
+		TelaCadPedido.getInstance().setVisible(true);
 	}
 	/**
 	 * Launch the application.
@@ -132,21 +140,58 @@ public class TelaCadPedido extends JFrame {
 		panelProduto.setBackground(Color.WHITE);
 		panelProduto.setLayout(null);
 		
-		JButton btnCadastrar = new JButton("Cadastrar");
+		btnCadastrar = new JButton("Cadastrar");
 		btnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//TODO Remover produtos do vendedor 
-				//TODO Persistencia dos dados
-				//TODO Gerar nota
+				//Cadastrar produto para cliente
+				int i = modeloProduto.getRowCount() - 1;
+				while(i > -1){
+					Produto produto = modeloProduto.getProdutoAt(i);
+					Pedido pedido = new Pedido();
+					String data;
+					Vendedor vendedor = new Vendedor();
+					ItemPedido itemPedido = new ItemPedido();
+					
+					Date date = new Date(System.currentTimeMillis()); 
+					SimpleDateFormat formatarDate = new SimpleDateFormat("dd/MM/yyyy"); 
+					
+					data = formatarDate.format(date);
+					vendedor.setNome(ValidarDados.funcionario.getNome());
+					vendedor.setCpf(ValidarDados.funcionario.getCpf());
+					itemPedido.setProduto(produto.getNome());
+					itemPedido.setQuantidade(produto.getQuantidade());
+					itemPedido.setValorTotal(itemPedido.getQuantidade()*produto.getValor());
+					
+					pedido.setData(data);
+					pedido.setVendedor(vendedor);
+					pedido.setCliente(cliente);
+					pedido.setItemPedido(itemPedido);
+					Fachada.getInstance().cadastrar(pedido);
+					i--;
+				}
+				//Remover produto cadastrado do vendedor			
+				String vendedorCPF = ValidarDados.funcionario.getCpf();
 				
-				Date data = new Date(System.currentTimeMillis()); 
-				SimpleDateFormat formatarDate = new SimpleDateFormat("dd/MM/yyyy"); 
-				formatarDate.format(data);
-				
+				//Remover produto do repositorio Vendedor_produto 
+				for(Produto p: produtoVendido){
+					if(p.getQuantidade() == 0){
+						Fachada.getInstance().remover(p.getNome(), vendedorCPF);
+					}else{
+																		
+						//Atualizar Repositório do produto de vendedor
+						Fachada.getInstance().atualizar(p, vendedorCPF);
+							
+						//Atualizar tabela 
+						modeloVendProd.addProduto(p);
+					}
+				}								
+				//TODO Gerar nota	
+				limparCampos();
 			}
 		});
 		btnCadastrar.setBounds(485, 356, 99, 23);
 		panelProduto.add(btnCadastrar);
+		btnCadastrar.setEnabled(false);
 		
 		modeloVendProd = new ModeloTabelaVendProd();
 		tableVendProd = new JTable(modeloVendProd);
@@ -161,7 +206,6 @@ public class TelaCadPedido extends JFrame {
 				
 		modeloProduto = new ModeloTabelaProduto();
 		tableClientProd = new JTable(modeloProduto);
-		//tableClientProd.setSelectionModel(null);
 		tableClientProd.setBounds(68, 163, 100, 30);
 		tableClientProd.setPreferredScrollableViewportSize(new Dimension(500,100));
 		tableClientProd.setFillsViewportHeight(true);
@@ -196,6 +240,7 @@ public class TelaCadPedido extends JFrame {
 							
 							//Retirar da tabela do vendedor a quantidade de produto selecionado
 							produto.retirarProduto(quantidade);
+							produtoVendido.add(produto);
 							
 							//Inserir o produto para o cliente
 							produtoToClient.setNome(produto.getNome());
@@ -208,13 +253,14 @@ public class TelaCadPedido extends JFrame {
 							modeloVendProd.removeProdutoAt(linhas[0]);
 							modeloVendProd.addProduto(produto);
 							textFieldQuantidade.setText("");
+							btnCadastrar.setEnabled(true);
 							
 						}else{
 							Popup.quantProd();
 						}
 					} catch(NumberFormatException nfe){
 						Popup.quantProd();
-					} catch (ProdutoQuantidadeException e1) {
+					} catch (ProdutoQuantidadeException pqe) {
 						Popup.prodQuantErro();
 					}
 				}
@@ -305,7 +351,7 @@ public class TelaCadPedido extends JFrame {
 						produtos = Fachada.getInstance().listarVendProd(ValidarDados.funcionario.getCpf());
 						if(produtos!=null){
 							//Insere resultados da busca na tabela.
-							ClasseAssistente.montarTabelaProduto(produtos, modeloVendProd);
+							ClasseAssistente.montarTabela(produtos, modeloVendProd);
 						}
 					}
 				} catch(Exception ex) {
@@ -378,16 +424,22 @@ public class TelaCadPedido extends JFrame {
 		contentPane.add(menuBar);
 		
 		btnSair = new JButton("Sair");
+		btnSair.setBorderPainted(false);
+		btnSair.setBackground(SystemColor.control);
 		btnSair.setBorder(UIManager.getBorder("MenuItem.border"));
 		btnSair.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				ValidarDados.funcionario = null;
 				TelaLogin.getInstance().setVisible(true);
+				deleteInstance();
 				dispose();
 			}
 		});
 		menuBar.add(btnSair);
 		
 		
+	}
+	private void deleteInstance(){
+		instance = null;
 	}
 }

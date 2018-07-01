@@ -13,12 +13,12 @@
 package interfaces;
 
 import java.sql.ResultSet;
+import java.util.List;
 
 import entidades.Pedido;
-import excecoes.CPFNaoEncontradoException;
 
 public interface IRepositorioPedido {
 	
 	public void inserir(Pedido pedido);
-	public Pedido procurar(String identificador)throws CPFNaoEncontradoException;
+	public List procurar(String cpf);
 }

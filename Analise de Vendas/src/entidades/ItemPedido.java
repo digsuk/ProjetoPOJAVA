@@ -11,21 +11,25 @@
 package entidades;
 
 public class ItemPedido {
-	private Produto produto;
+	private String nome_produto;
 	private double valorTotal;
 	private int quantidade;
 	
-	public ItemPedido(Produto produto, double valorTotal, int quantidade) {
+	public ItemPedido(){
+		
+	}
+	
+	public ItemPedido(String nome_produto, double valorTotal, int quantidade) {
 		super();
-		this.produto = produto;
+		this.nome_produto = nome_produto;
 		this.valorTotal = valorTotal;
 		this.quantidade = quantidade;
 	}
-	public Produto getProduto() {
-		return produto;
+	public String getProduto() {
+		return nome_produto;
 	}
-	public void setProduto(Produto produto) {
-		this.produto = produto;
+	public void setProduto(String nome_produto) {
+		this.nome_produto = nome_produto;
 	}
 	public double getValorTotal() {
 		return valorTotal;

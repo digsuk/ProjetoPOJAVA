@@ -178,14 +178,14 @@ public class TelaGerenciaProd extends JFrame {
 					lista = Fachada.getInstance().listarProd();
 	
 					//Insere resultados da busca na tabela.
-					ClasseAssistente.montarTabelaProduto(lista, modelo);
+					ClasseAssistente.montarTabela(lista, modelo);
 						
 					//Monta o comboBox com os vendedores supordinados ao gerente logado e devolve o cpf do gerente
 					cpf = ClasseAssistente.montaComboBox(comboBox);
 				} else{
 					Produto produto;
 					produto = Fachada.getInstance().procurarProd(textFieldNome.getText());
-					ClasseAssistente.montarTabelaProduto(produto, modelo);
+					ClasseAssistente.montarTabela(produto, modelo);
 				}
 				setVisibilidade(true);
 			}
@@ -272,7 +272,7 @@ public class TelaGerenciaProd extends JFrame {
 					String vendedorCPF = cpf.get(vendedorSelecionado);
 					try{
 					//Recupera dados do vendedor.
-					Vendedor vendedor = (Vendedor) Fachada.getInstance().procurarFunc(vendedorCPF);
+					Funcionario vendedor = Fachada.getInstance().procurarFunc(vendedorCPF);
 					
 					//Caso a tabela esteja preenchida, ela será limpada, para receber novos resultados.
 					while(modeloVendProd.getRowCount()>0)
@@ -284,10 +284,9 @@ public class TelaGerenciaProd extends JFrame {
 						produtos = Fachada.getInstance().listarVendProd(vendedorCPF);
 						if(produtos!=null){
 							//Insere resultados da busca na tabela.
-							ClasseAssistente.montarTabelaProduto(produtos, modeloVendProd);
+							ClasseAssistente.montarTabela(produtos, modeloVendProd);
 						}
 					}catch(CPFNaoEncontradoException cpfnee){
-						//Caso a tabela esteja preenchida, ela será limpada, para receber novos resultados.
 						while(modeloVendProd.getRowCount()>0)
 							modeloVendProd.removeProdutoAt(0);
 					}
@@ -327,7 +326,7 @@ public class TelaGerenciaProd extends JFrame {
 								produto = modelo.getProdutoAt(linhas[0]);
 								//Recupera os dados do vendedor selecionado no dropDown
 								String vendedorCPF = cpf.get(vendedorSelecionado);
-								Vendedor vendedor = (Vendedor) Fachada.getInstance().procurarFunc(vendedorCPF);
+								//Funcionario vendedor = Fachada.getInstance().procurarFunc(vendedorCPF);
 								
 								//Retirar do repositorio a quantidade de produto selecionado
 								produto.retirarProduto(quantidade);
@@ -356,7 +355,7 @@ public class TelaGerenciaProd extends JFrame {
 									produtoToVendedor.setQuantidade(quantidade);
 									produtoToVendedor.setValor(produto.getValor());
 									
-									Fachada.getInstance().cadastrar(vendedor,produtoToVendedor);
+									Fachada.getInstance().cadastrar(vendedorCPF,produtoToVendedor);
 												
 								//Atualizar tabelas 
 								modeloVendProd.addProduto(produtoToVendedor);
@@ -374,8 +373,6 @@ public class TelaGerenciaProd extends JFrame {
 						Popup.quantProd();
 					}catch(ProdutoQuantidadeException pqe){
 						Popup.prodQuantErro();
-					}catch(CPFNaoEncontradoException cpfnee) {
-						Popup.cpfNaoEncontrado(cpfnee);
 					}
 				}else{
 					Popup.select1Row();
@@ -531,6 +528,7 @@ public class TelaGerenciaProd extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				ValidarDados.funcionario = null;
 				TelaLogin.getInstance().setVisible(true);
+				deleteInstance();
 				dispose();
 			}
 		});
@@ -556,5 +554,9 @@ public class TelaGerenciaProd extends JFrame {
 		button.setBackground(Color.WHITE);
 		button.setBounds(0, 0, 152, 23);
 		panel_1.add(button);
+	}
+	
+	private void deleteInstance(){
+		instance = null;
 	}
 }

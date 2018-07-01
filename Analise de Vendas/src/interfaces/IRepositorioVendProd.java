@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IRepositorioVendProd {
 
-	public void inserir(Vendedor vendedor, Produto produto);
+	public void inserir(String vendedorCpf, Produto produto);
 	public List listar(String cpf);
 	public Produto procurar(String produto_nome, String cpf);
 	public void atualizar(Produto produto, String cpf);

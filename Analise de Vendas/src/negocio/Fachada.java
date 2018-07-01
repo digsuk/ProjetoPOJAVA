@@ -31,16 +31,16 @@ public class Fachada {
 	private CadastroPedido pedido;
 	
 	public Fachada(){
-		//Repositório Array
+		
 		IRepositorioProduto repProd = new RepProdArray();
 		IRepositorioFuncionario repFunc = new RepFuncArray();
 		IRepositorioVendProd repVendProd = new RepVendProdArray();
-		IRepositorioPedido repPedido = new RepPedidoArray();	
+		IRepositorioPedido repPedido = new RepPedidoArray();
 		
 		/*IRepositorioProduto repProd = new RepProdBD();
 		IRepositorioFuncionario repFunc = new RepFuncBD();
-		IRepositorioVendProd repVendProd = new RepVendProdBD();*/
-		//IRepositorioPedido repPedido = new RepPedidoBD();
+		IRepositorioVendProd repVendProd = new RepVendProdBD();
+		IRepositorioPedido repPedido = new RepPedidoBD();*/
 		
 		vendProd = new CadastroVendProd(repVendProd);
 		produto = new CadastroProduto(repProd);
@@ -95,8 +95,8 @@ public class Fachada {
 	//FIM CRUD de funcionário
 	
 	//INICIO CRUD de vendedor_produto
-	public void cadastrar(Vendedor vendedor, Produto produto){
-		this.vendProd.inserir(vendedor,produto);
+	public void cadastrar(String vendedorCpf, Produto produto){
+		this.vendProd.inserir(vendedorCpf,produto);
 	}
 	public Produto procurar(String produto_nome, String cpf){
 		return this.vendProd.procurar(produto_nome, cpf);
@@ -116,8 +116,8 @@ public class Fachada {
 	public void cadastrar(Pedido pedido) {
 		this.pedido.inserir(pedido);
 	}
-	public Pedido procurarPedido(String cpf) throws CPFNaoEncontradoException {
-		return this.pedido.procurar(cpf);
+	public List procurarPedido(String cpf, String dataDe, String dataAte){
+		return this.pedido.procurar(cpf,dataDe,dataAte);
 	}
 	//FIM CRUD de pedido
 }

@@ -17,10 +17,10 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import entidades.Pedido;
+import entidades.Relatorio;
 
 public class ModeloTabelaPedido extends AbstractTableModel{
-	private ArrayList<Pedido> dataList = new ArrayList();
+	private ArrayList<Relatorio> dataList = new ArrayList();
 	private String[] columns={"Vendedor", "Cliente","Produto","Quantidade","Valor total","Data"};
 	Class[] columnTypes = new Class[] { Object.class, Object.class, Object.class, Object.class, Object.class, Object.class};
 	boolean[] columnEditables = new boolean[] {false, false, false, false, false, false, false, false, false};
@@ -41,8 +41,8 @@ public class ModeloTabelaPedido extends AbstractTableModel{
 		dataList.addAll(l);
 	}  
 
-	public void addPedido(Pedido p) {
-		dataList.add(p);
+	public void addPedido(Relatorio r) {
+		dataList.add(r);
 		fireTableDataChanged();
 	}
 
@@ -51,19 +51,19 @@ public class ModeloTabelaPedido extends AbstractTableModel{
 		fireTableDataChanged();
 	}
 	
-	public Pedido getPedidoAt(int row) {
+	public Relatorio getPedidoAt(int row) {
 		return dataList.get(row);
 	} 
 	
-	public int getPedidoAt(Pedido pedido){
+	public int getPedidoAt(Relatorio pedido){
 		return dataList.lastIndexOf(pedido);
 	}
 
-	public Pedido removeProdutoAt(int row) {
-		Pedido p;
-		p = dataList.remove(row);
+	public Relatorio removePedidoAt(int row) {
+		Relatorio r;
+		r = dataList.remove(row);
 		fireTableDataChanged();
-		return p;
+		return r;
 	}
 	
 	public int getRowCount() {
@@ -79,16 +79,20 @@ public class ModeloTabelaPedido extends AbstractTableModel{
 	}
 
 	public Object getValueAt(int row, int col) {
-		Pedido p = dataList.get(row);
+		Relatorio r = dataList.get(row);
 		switch (col) {
-		case 3:
-			return p.getCliente();
+		case 0:
+			return r.getVendedor();
 		case 1:
-			return p.getVendedor();
-		case 6:
-			return p.getItemPedido();
-		case 9:
-			return p.getData();
+			return r.getCliente();
+		case 2:
+			return r.getItemPedido();
+		case 3:
+			return r.getQuantidade();
+		case 4:
+			return r.getValor_total();
+		case 5:
+			return r.getData();
 		default:
 			return null;
 		}

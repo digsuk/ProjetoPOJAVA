@@ -10,6 +10,9 @@
  *-------------------------------------------*/
 package dados;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import entidades.Pedido;
 import excecoes.CPFNaoEncontradoException;
 import interfaces.IRepositorioPedido;
@@ -25,39 +28,22 @@ public class RepPedidoArray implements IRepositorioPedido {
 		indice = 0;
 		repositorio = new Pedido[TAMANHO];
 	}
-		
-	public int getIndice(String cpf) {
-		i = 0;
-		if (indice != 0) {
-			while (!cpf.equals(repositorio[i].getVendedor().getCpf())) {
-				if (i == indice - 1) {
-					return -1;
-				} else
-					i++;
-			}
-			return i;
-		}
-		return -1;
-	}
-	
-	public boolean existe(String cpf) {
-		i = getIndice(cpf);
-		if (i == -1)
-			return false;
-		else
-			return true;
-	}
-	
+			
 	public void inserir(Pedido pedido){
 		repositorio[indice] = pedido;
 		indice++;
 	}
-	public Pedido procurar(String cpf)throws CPFNaoEncontradoException{
-		if (existe(cpf)) {
-			return this.repositorio[i];
-		} else{
-			CPFNaoEncontradoException cpfnee = new CPFNaoEncontradoException(cpf);
-			throw cpfnee;
+	public List procurar(String cpf){
+		i = 0;
+		List pedidos = new ArrayList();
+		if (indice != 0) {			
+			while (i < indice) {
+				if(cpf.equals(repositorio[i].getVendedor().getCpf())){
+					pedidos.add(repositorio[i]);
+				}
+				i++;
+			}
 		}
+		return pedidos;
 	}
 }

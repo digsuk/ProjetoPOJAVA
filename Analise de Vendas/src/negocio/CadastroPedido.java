@@ -13,6 +13,8 @@
 package negocio;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import entidades.Pedido;
 import excecoes.CPFNaoEncontradoException;
@@ -29,7 +31,18 @@ public class CadastroPedido {
 	public void inserir(Pedido pedido){
 		repositorio.inserir(pedido);
 	}
-	public Pedido procurar(String identificador) throws CPFNaoEncontradoException {
-			return repositorio.procurar(identificador);
+	public List procurar(String cpf, String dataDe, String dataAte) {
+		//if(!cpf.equals("") && (dataDe.equals("") && dataAte.equals(""))){
+			return repositorio.procurar(cpf);
+		//}
+		/*else if(!dataDe.equals("") && dataAte.equals("") ){
+			
+		}
+		else if(!cpf.equals("") && (!dataDe.equals("") && !dataAte.equals(""))){
+			lista = ;
+		}
+		else if(){
+			
+		}*/
 	}
 }
