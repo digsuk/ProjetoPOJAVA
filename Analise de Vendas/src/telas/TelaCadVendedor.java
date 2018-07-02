@@ -21,6 +21,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import entidades.Vendedor;
+import excecoes.CPFNaoEncontradoException;
+import negocio.ClasseAssistente;
 import negocio.Fachada;
 import negocio.Mensagem;
 import negocio.ValidarDados;
@@ -126,16 +128,16 @@ public class TelaCadVendedor extends JFrame {
 		
 		JButton btnCadastrar = new JButton("Cadastrar");
 		btnCadastrar.addActionListener(new ActionListener() {
-			public void actionPerformed1(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent arg0) {
 				if(ValidarDados.validarCampoVazio(textFieldNome.getText(), textFieldCPF.getText(), 
 						textFieldEmail.getText())) {
 					try {
 						Vendedor vendedorCadastrado;
 						Vendedor vendedor = new Vendedor(textFieldNome.getText(), textFieldCPF.getText(),
-								textFieldEmail.getText());
-						vendedorCadastrado = Fachada.getInstance().procurarVendedor(textFieldCPF.getText());
+								textFieldEmail.getText(),ClasseAssistente.gerarSenha(),"Vendedor",ValidarDados.funcionario.getCpf());
+						vendedorCadastrado = (Vendedor)Fachada.getInstance().procurarFunc(textFieldCPF.getText());
 						if(vendedorCadastrado == null) {
-							Fachada.getInstance().cadastrarVendedor(vendedor);
+							Fachada.getInstance().cadastrar(vendedor);
 							JOptionPane.showMessageDialog(null, Mensagem.CADVENDSUC);
 							limparcampos();
 						}else {
@@ -144,15 +146,13 @@ public class TelaCadVendedor extends JFrame {
 						
 					}catch(NumberFormatException nfe) {
 						Popup.numberFormat();
+					} catch (CPFNaoEncontradoException e) {
+						e.printStackTrace();
 					}
 				}
 			}
 
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
+			
 		});
 		btnCadastrar.setBounds(204, 152, 89, 23);
 		panel.add(btnCadastrar);

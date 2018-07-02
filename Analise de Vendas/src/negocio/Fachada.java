@@ -29,7 +29,6 @@ public class Fachada {
 	private CadastroFuncionario funcionario;
 	private CadastroVendProd vendProd;
 	private CadastroPedido pedido;
-	private CadastroVendedor vendVendedor;
 	
 	public Fachada(){
 		//Repositório Array
@@ -122,21 +121,5 @@ public class Fachada {
 	}
 	//FIM CRUD de pedido
 	
-	//INICIO CRUD de vendedor
-	public void cadastrarVendedor(Vendedor vendedor) {
-		this.vendVendedor.inserir(vendedor);
-	}
-	
-	public Vendedor procurarVendedor(String cpf) throws CPFNaoEncontradoException {
-		return this.vendVendedor.procurar(cpf);
-	}
-	
-	public void remover(String cpf) {
-		this.vendVendedor.remover(cpf);
-	}
-	
-	public void atualizar(Vendedor vendedor) {
-		return this.vendVendedor.atualizar(vendedor);
-	}
 	
 }

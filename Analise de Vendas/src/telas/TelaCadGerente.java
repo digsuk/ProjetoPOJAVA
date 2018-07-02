@@ -19,13 +19,25 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import entidades.Gerente;
+import excecoes.CPFNaoEncontradoException;
+import negocio.ClasseAssistente;
+import negocio.Fachada;
+import negocio.Mensagem;
+import negocio.ValidarDados;
+
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 
 public class TelaCadGerente extends JFrame {
@@ -115,6 +127,34 @@ public class TelaCadGerente extends JFrame {
 		textFieldEmail.setColumns(10);
 		
 		JButton btnCadastrar = new JButton("Cadastrar");
+		btnCadastrar.addActionListener(new ActionListener() {
+			public void ActionPerformed(ActionEvent arg0) throws CPFNaoEncontradoException {
+			if(ValidarDados.validarCampoVazio(textFieldNome.getText(),textFieldCPF.getText(),textFieldEmail.getText()))	{
+				try {
+					Gerente gerentecadastrado;
+					Gerente gerente = new Gerente(textFieldNome.getText(),textFieldCPF.getText(),
+							textFieldEmail.getText(),ClasseAssistente.gerarSenha(),"Gerente");
+					gerentecadastrado = (Gerente)Fachada.getInstance().procurarFunc(textFieldCPF.getText());
+					if(gerentecadastrado == null) {
+						Fachada.getInstance().cadastrar(gerente);
+						JOptionPane.showMessageDialog(null, Mensagem.CADGERENTESUC);
+						limparcampos();
+					}else {
+						Popup.GerenteCadErro();
+					}
+					
+				}catch(NumberFormatException nfe) {
+					Popup.numberFormat();
+				}
+			}
+			}
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		btnCadastrar.setBounds(204, 152, 89, 23);
 		panel.add(btnCadastrar);
 		
